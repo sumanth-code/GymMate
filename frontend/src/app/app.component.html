@@ -1,0 +1,115 @@
+<!-- frontend/src/app/app.component.html -->
+<main class="dashboard-wrapper">
+  <!-- Sidebar -->
+  <aside class="glass-panel sidebar animate-fade-in">
+    <div class="logo">
+      <h2 class="gradient-text" style="font-size: 1.8rem;">FitTrack Pro</h2>
+    </div>
+    <nav class="nav-links">
+      <a href="#" class="active">🏠 Dashboard</a>
+      <a href="#">🏋️ Log Workouts</a>
+      <a href="#">📊 Analytics</a>
+      <a href="#">🥗 Suggested Diet Plan</a>
+      <a href="#">⚙️ Profile Settings</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <section class="main-content">
+    <header class="topbar glass-panel animate-fade-in" style="animation-delay: 0.1s;">
+      <div>
+        <h1 style="margin: 0; font-size: 2rem;">Welcome back, User! 🔥</h1>
+        <p class="text-muted" style="margin-top: 8px;">You've burned {{ caloriesBurned | number:'1.0-0' }} kcal so far. Keep up the momentum!</p>
+      </div>
+      <button class="btn-primary" (click)="openLogModal()" style="padding: 16px 32px; font-size: 1.1rem;">+ Fast Log</button>
+    </header>
+
+    <div class="metrics-grid">
+      <!-- Metric Cards -->
+      <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.2s;">
+        <h3 class="gradient-text">Total Workouts</h3>
+        <h2>{{ totalWorkouts }}</h2>
+        <span class="text-success">↑ Local Database</span>
+      </div>
+      <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.3s;">
+        <h3 class="gradient-text">Calories Burned</h3>
+        <h2>{{ caloriesBurned | number:'1.0-0' }}</h2>
+        <span class="text-success">↑ This Month</span>
+      </div>
+      <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.4s;">
+        <h3 class="gradient-text">Current BMI</h3>
+        <h2>22.4</h2>
+        <span class="text-muted">Normal weight</span>
+      </div>
+      <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.5s;">
+        <h3 class="gradient-text">Active Streak</h3>
+        <h2>5 Days</h2>
+        <span class="text-success" style="font-weight: bold;">Personal Best!</span>
+      </div>
+    </div>
+
+    <div class="charts-container">
+      <div class="glass-panel main-chart animate-fade-in" style="animation-delay: 0.6s;">
+        <h2 style="margin-top: 0;">Weekly Activity Trends</h2>
+        <div class="chart-placeholder" style="margin-top: 15px; height: 320px; position: relative;">
+          <canvas baseChart
+              [data]="lineChartData"
+              [options]="lineChartOptions"
+              [type]="'line'">
+          </canvas>
+        </div>
+      </div>
+      
+      <div class="side-panel">
+        <div class="glass-panel animate-fade-in" style="flex: 1; animation-delay: 0.7s;">
+          <h2 style="margin-top: 0; display: flex; align-items: center; justify-content: space-between;">
+            Gemini AI Insights 🤖
+          </h2>
+          <p class="text-light" style="line-height: 1.6;">{{ ocrInsight }}</p>
+          
+          <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); margin-top: 20px;">
+             <strong>Upload Medical/BMI Image</strong>
+             <input type="file" (change)="uploadDocument($event)" accept="image/*" class="glass-input" style="width:100%; margin-top: 10px; padding: 8px; font-size: 0.85rem; box-sizing: border-box;">
+             <span *ngIf="isUploading" class="text-success" style="font-size: 0.85rem; display: block; margin-top: 8px; font-weight: bold;">Analyzing via Tesseract OCR & Gemini API...</span>
+          </div>
+          
+          <button class="btn-primary" style="width: 100%; margin-top: 25px; padding: 16px;">View Full Diet Schedule</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workout Modal Overlay -->
+  <div class="modal-overlay animate-fade-in" *ngIf="isLogModalOpen">
+    <div class="glass-panel modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="margin: 0;" class="gradient-text">Log a Workout</h2>
+        <button (click)="closeLogModal()" style="background: transparent; border: none; color: white; cursor: pointer; font-size: 1.5rem;">✕</button>
+      </div>
+      
+      <form [formGroup]="workoutForm" (ngSubmit)="submitWorkout()" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="form-group">
+          <label>Exercise Name</label>
+          <input type="text" formControlName="name" placeholder="e.g. Bench Press, Squat, Running..." class="glass-input">
+        </div>
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Sets</label>
+            <input type="number" formControlName="sets" class="glass-input">
+          </div>
+          <div class="form-group">
+            <label>Reps</label>
+            <input type="number" formControlName="reps" class="glass-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Weight Lifted (kg)</label>
+          <input type="number" formControlName="weight" class="glass-input">
+        </div>
+        
+        <button type="submit" [disabled]="!workoutForm.valid" class="btn-primary" style="width: 100%; margin-top: 16px; padding: 14px;">Log & Calculate Calories</button>
+      </form>
+    </div>
+  </div>
+
+</main>
