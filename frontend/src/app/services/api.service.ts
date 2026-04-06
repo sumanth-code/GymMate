@@ -17,7 +17,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  // MOCK Auth Initialization
+  // MOCK Auth Initialization.s
   async initializeMockSession(phone: string) {
     this.http.post<any>(`${this.baseUrl}/auth/login`, {
       phoneNumber: phone,
