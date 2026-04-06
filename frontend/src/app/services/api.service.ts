@@ -6,16 +6,16 @@ import { Observable, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:8081/api';
-  
+  private readonly baseUrl = 'https://gymmate-ebuv.onrender.com/api';
+
   // State management variables for our App
   private currentUserId = '';
   private jwtToken = '';
-  
+
   // Subject for reactive UI updates
   public sessionReady$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // MOCK Auth Initialization
   async initializeMockSession(phone: string) {
