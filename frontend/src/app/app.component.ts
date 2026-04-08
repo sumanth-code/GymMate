@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ApiService } from './services/api.service';
@@ -8,7 +8,8 @@ import { ApiService } from './services/api.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
   title = 'FitTrack Pro';
