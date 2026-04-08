@@ -1,0 +1,18 @@
+<div class="glass-panel animate-fade-in" style="flex: 1; margin: 20px;">
+  <h2 class="gradient-text" style="display: flex; align-items: center; justify-content: space-between;">
+    Profile Settings ⚙️
+  </h2>
+  
+  <p class="text-light" style="line-height: 1.6;">
+    Manage your account data and configurations here.
+  </p>
+  
+  <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid var(--secondary); margin-top: 20px;">
+     <strong>Data Export Settings</strong>
+     <p style="font-size: 0.85rem; margin-top: 5px; color: #94a3b8;">Download a complete CSV dump of your local workout history, generated dynamically by the Spring Boot server.</p>
+     
+     <button class="btn-primary" (click)="downloadMyData()" [disabled]="isDownloading" style="margin-top: 15px; padding: 10px 20px;">
+       {{ isDownloading ? 'Generating CSV...' : 'Download My Data (CSV)' }}
+     </button>
+  </div>
+</div>

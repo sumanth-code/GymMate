@@ -17,7 +17,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  // MOCK Auth Initialization.s
+  // MOCK Auth Initialization.
   async initializeMockSession(phone: string) {
     this.http.post<any>(`${this.baseUrl}/auth/login`, {
       phoneNumber: phone,
@@ -51,5 +51,11 @@ export class ApiService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.baseUrl}/documents/upload/${this.currentUserId}`, formData);
+  }
+
+  // Export Workouts CSV
+  exportWorkouts(): Observable<Blob> {
+    const url = `${this.baseUrl}/export/csv/${this.currentUserId}`;
+    return this.http.get(url, { responseType: 'blob' });
   }
 }
