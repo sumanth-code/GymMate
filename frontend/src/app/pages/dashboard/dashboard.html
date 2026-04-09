@@ -6,16 +6,25 @@
   <button class="btn-primary" (click)="openLogModal()" style="padding: 16px 32px; font-size: 1.1rem;">+ Fast Log</button>
 </header>
 
+<!-- Render cold-start loading notice -->
+<div *ngIf="isLoading" class="glass-panel animate-fade-in" style="display:flex; align-items:center; gap:16px; padding: 16px 24px; border-left: 4px solid var(--secondary);">
+  <div class="spinner"></div>
+  <div>
+    <strong style="color: var(--secondary);">Connecting to server…</strong>
+    <p style="margin:4px 0 0; font-size: 0.85rem; color: #94a3b8;">The backend may take up to 30 seconds to wake up on the free tier. Hang tight!</p>
+  </div>
+</div>
+
 <div class="metrics-grid">
   <!-- Metric Cards -->
   <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.2s;">
     <h3 class="gradient-text">Total Workouts</h3>
-    <h2>{{ totalWorkouts }}</h2>
+    <h2 [class.loading-shimmer]="isLoading">{{ isLoading ? '—' : totalWorkouts }}</h2>
     <span class="text-success">↑ Local Database</span>
   </div>
   <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.3s;">
     <h3 class="gradient-text">Calories Burned</h3>
-    <h2>{{ caloriesBurned | number:'1.0-0' }}</h2>
+    <h2 [class.loading-shimmer]="isLoading">{{ isLoading ? '—' : (caloriesBurned | number:'1.0-0') }}</h2>
     <span class="text-success">↑ This Month</span>
   </div>
   <div class="glass-panel metric-box animate-fade-in" style="animation-delay: 0.4s;">
@@ -88,7 +97,10 @@
         <input type="number" formControlName="weight" class="glass-input">
       </div>
       
-      <button type="submit" [disabled]="!workoutForm.valid" class="btn-primary" style="width: 100%; margin-top: 16px; padding: 14px;">Log & Calculate Calories</button>
+      <button type="submit" [disabled]="!workoutForm.valid || isSaving" class="btn-primary" style="width: 100%; margin-top: 16px; padding: 14px;">
+        {{ isSaving ? 'Saving…' : 'Log & Calculate Calories' }}
+      </button>
     </form>
   </div>
 </div>
+

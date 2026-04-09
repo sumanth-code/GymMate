@@ -21,6 +21,7 @@ export class Dashboard implements OnInit {
 
   // File Upload & AI
   isUploading = false;
+  isSaving = false;
   ocrInsight = 'Based on your recent Heavy Leg Day, Gemini suggests focusing specifically on Protein recovery overnight.';
 
   // Modal State
@@ -63,10 +64,10 @@ export class Dashboard implements OnInit {
       if (ready) {
         this.fetchDashboardData();
         
-        // Ping Render backend every 14 minutes to prevent free-tier from sleeping
+        // Ping Render backend every 10 minutes to prevent free-tier from sleeping
         setInterval(() => {
           this.apiService.getInsights().subscribe();
-        }, 14 * 60 * 1000);
+        }, 10 * 60 * 1000);
       }
     });
 
@@ -109,13 +110,18 @@ export class Dashboard implements OnInit {
 
   submitWorkout() {
     if (this.workoutForm.valid) {
+      this.isSaving = true;
       const v = this.workoutForm.value;
       this.apiService.createWorkout(v.name!, v.weight!, v.reps!, v.sets!).subscribe({
         next: (res: any) => {
+          this.isSaving = false;
           this.closeLogModal();
-          this.fetchDashboardData(); 
+          this.fetchDashboardData();
         },
-        error: (err: any) => console.error("Failed to log workout", err)
+        error: (err: any) => {
+          this.isSaving = false;
+          console.error("Failed to log workout", err);
+        }
       });
     }
   }
